@@ -133,7 +133,10 @@ export default class TournamentChannelGeneratorCommand extends Command {
         guild: Guild,
         category: CategoryChannel
     ): Promise<void> {
-        const adminChannel = await guild.channels.create(`${tournamentName} Announcements`, { type: "text" });
+        const adminChannel = await guild.channels.create(`${tournamentName} Announcements`, {
+            type: "text",
+            parent: category,
+        });
         await adminChannel.updateOverwrite(this.everyone, { SEND_MESSAGES: false });
 
         const channelNames = [
