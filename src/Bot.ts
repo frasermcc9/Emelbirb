@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import { EventManager } from "./EventManager";
 import { ReactionCollector, MessageCollector as Function, Message } from "discord.js";
 import { ServerSettingsModel, IServerSettingsDocument } from "./database/models/ServerSettings/ServerSettings.model";
+import { IUserSettingsDocument } from "./database/models/UserSettings/UserSettings.model";
+
 dotenv.config();
 export class Bot extends CommandoClient {
     private static readonly bot: Bot = new Bot();
@@ -26,6 +28,9 @@ export class Bot extends CommandoClient {
         this.reactionListeners = new Map();
         this.commandListeners = new Map();
         this.guildSettingsCache = new Map();
+        this.userCache = new Map();
+        this.validEmails = new Map();
+        this.usedEmails = new Set();
     }
 
     async start(): Promise<void> {
@@ -62,6 +67,7 @@ export class Bot extends CommandoClient {
                 ["config", "Commands for bot settings in this server"],
                 ["messages", "Custom commands and quotes"],
                 ["tournament", "Utility tournament commands"],
+                ["voting", "Commands for voting"],
             ])
 
             .registerCommandsIn({
@@ -119,4 +125,40 @@ export class Bot extends CommandoClient {
     public refreshCachePoint(guild: IServerSettingsDocument) {
         this.guildSettingsCache.set(guild.guildId, guild);
     }
+
+    //#region Email Registers
+    /** UserId : UserDocument */
+    private userCache: Map<string, IUserSettingsDocument>;
+    /** Email : ClubMember */
+    private validEmails: Map<string, ClubMember>;
+    private usedEmails: Set<string>;
+    public get UserCache() {
+        return this.userCache;
+    }
+    public refreshUserCachePoint(user: IUserSettingsDocument) {
+        this.userCache.set(user.userId, user);
+        const email = user.getEmail();
+        if (email) {
+            this.usedEmails.add(email);
+        }
+    }
+    /**
+     * For use of adding from the spreadsheet
+     * @param c
+     */
+    public addClubMember(c: ClubMember) {
+        this.validEmails.set(c.email, c);
+    }
+    public isValidEmail(email: string): boolean {
+        return this.validEmails.has(email) && !this.usedEmails.has(email);
+    }
+    //#endregion
+}
+
+export interface ClubMember {
+    email: string;
+    name: string;
+    uniId: string;
+    games: string;
+    studyYear: string;
 }
