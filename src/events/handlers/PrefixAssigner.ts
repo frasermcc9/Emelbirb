@@ -5,7 +5,7 @@ import { GuildMember } from "discord.js";
 import { ServerSettingsModel } from "../../database/models/ServerSettings/ServerSettings.model";
 import { CommandoGuild } from "discord.js-commando";
 
-export default class UpdateMemberCount implements BotEvent {
+export default class PrefixAssigner implements BotEvent {
     private client: Bot = Bot.Get;
 
     start(): void {
