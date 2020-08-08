@@ -16,6 +16,9 @@ export interface IMemberCount {
     };
     dadBot?: boolean;
     guildCommands: Map<string, string> | undefined;
+    logging: {
+        channel?: string;
+    };
     dateOfEntry?: Date;
     lastUpdated?: Date;
 }
@@ -35,7 +38,11 @@ export interface IServerSettingsDocument extends IMemberCount, Document {
 
     addCommand(this: IServerSettingsDocument, { name, response }: { name: string; response: string }): Promise<void>;
     deleteCommand(this: IServerSettingsDocument, { name }: { name: string }): Promise<boolean>;
-    getCommands(this: IServerSettingsDocument): Promise<Map<string, string>>
+    getCommands(this: IServerSettingsDocument): Promise<Map<string, string>>;
+
+    setLogChannel(this: IServerSettingsDocument, { channel }: { channel: string }): Promise<void>;
+    getLogChannel(this: IServerSettingsDocument): Promise<string | undefined>;
+    removeLogChannel(this: IServerSettingsDocument): Promise<void>;
 }
 export interface IServerSettingsModel extends Model<IServerSettingsDocument> {
     findOneOrCreate(this: IServerSettingsModel, { guildId }: { guildId: string }): Promise<IServerSettingsDocument>;

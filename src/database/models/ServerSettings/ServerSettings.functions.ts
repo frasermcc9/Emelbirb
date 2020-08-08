@@ -10,6 +10,7 @@ export async function setLastUpdated(this: IServerSettingsDocument): Promise<voi
         this.lastUpdated = now;
         await this.save();
     }
+    Bot.Get.refreshCachePoint(this);
 }
 
 export function getMemberCountChannel(this: IServerSettingsDocument): string | undefined {
@@ -80,6 +81,18 @@ export async function getCommands(this: IServerSettingsDocument): Promise<Map<st
     return this.guildCommands;
 }
 
+export async function setLogChannel(this: IServerSettingsDocument, { channel }: { channel: string }): Promise<void> {
+    this.logging.channel = channel;
+    await this.setLastUpdated();
+}
+export async function getLogChannel(this: IServerSettingsDocument): Promise<string | undefined> {
+    return this.logging.channel;
+}
+export async function removeLogChannel(this: IServerSettingsDocument): Promise<void> {
+    this.logging.channel = undefined;
+    await this.setLastUpdated();
+}
+
 //Section: Static Methods (for model)
 
 export async function findOneOrCreate(
@@ -88,7 +101,12 @@ export async function findOneOrCreate(
 ): Promise<IServerSettingsDocument> {
     let record: IServerSettingsDocument | null = await this.findOne({ guildId: guildId });
     if (record == null) {
-        record = await this.create({ guildId: guildId, suggestions: { counter: 0 }, guildCommands: new Map() });
+        record = await this.create({
+            guildId: guildId,
+            suggestions: { counter: 0 },
+            guildCommands: new Map(),
+            logging: {},
+        });
         Bot.Get.refreshCachePoint(record);
     }
     return record;

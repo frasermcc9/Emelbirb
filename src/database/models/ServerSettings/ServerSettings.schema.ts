@@ -14,6 +14,9 @@ import {
     addCommand,
     deleteCommand,
     getCommands,
+    getLogChannel,
+    setLogChannel,
+    removeLogChannel,
 } from "./ServerSettings.functions";
 
 const ServerSettingsSchema = new Schema({
@@ -26,6 +29,9 @@ const ServerSettingsSchema = new Schema({
     },
     dadBot: { type: Boolean, required: false },
     guildCommands: { type: Map, required: false },
+    logging: {
+        channel: { type: String, required: false },
+    },
     dateOfEntry: {
         type: Date,
         default: new Date(),
@@ -54,6 +60,10 @@ ServerSettingsSchema.methods.setDadbot = setDadbot;
 ServerSettingsSchema.methods.addCommand = addCommand;
 ServerSettingsSchema.methods.deleteCommand = deleteCommand;
 ServerSettingsSchema.methods.getCommands = getCommands;
+
+ServerSettingsSchema.methods.getLogChannel = getLogChannel;
+ServerSettingsSchema.methods.setLogChannel = setLogChannel;
+ServerSettingsSchema.methods.removeLogChannel = removeLogChannel;
 
 ServerSettingsSchema.methods.setLastUpdated = setLastUpdated;
 
