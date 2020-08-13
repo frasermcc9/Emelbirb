@@ -17,6 +17,8 @@ import {
     getLogChannel,
     setLogChannel,
     removeLogChannel,
+    addBadge,
+    removeBadge,
 } from "./ServerSettings.functions";
 
 const ServerSettingsSchema = new Schema({
@@ -31,6 +33,9 @@ const ServerSettingsSchema = new Schema({
     guildCommands: { type: Map, required: false },
     logging: {
         channel: { type: String, required: false },
+    },
+    badges: {
+        type: {},
     },
     dateOfEntry: {
         type: Date,
@@ -64,6 +69,9 @@ ServerSettingsSchema.methods.getCommands = getCommands;
 ServerSettingsSchema.methods.getLogChannel = getLogChannel;
 ServerSettingsSchema.methods.setLogChannel = setLogChannel;
 ServerSettingsSchema.methods.removeLogChannel = removeLogChannel;
+
+ServerSettingsSchema.methods.addBadge = addBadge;
+ServerSettingsSchema.methods.removeBadge = removeBadge;
 
 ServerSettingsSchema.methods.setLastUpdated = setLastUpdated;
 

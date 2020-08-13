@@ -1,5 +1,6 @@
 import { model, Model, Document } from "mongoose";
 import ServerSettingsSchema from "./ServerSettings.schema";
+import { IBadge } from "../../../structures/Badges";
 
 export const ServerSettingsModel = model<IServerSettingsDocument>(
     "memberCounts",
@@ -19,6 +20,7 @@ export interface IMemberCount {
     logging: {
         channel?: string;
     };
+    badges: { [k: string]: IBadge };
     dateOfEntry?: Date;
     lastUpdated?: Date;
 }
@@ -43,6 +45,17 @@ export interface IServerSettingsDocument extends IMemberCount, Document {
     setLogChannel(this: IServerSettingsDocument, { channel }: { channel: string }): Promise<void>;
     getLogChannel(this: IServerSettingsDocument): Promise<string | undefined>;
     removeLogChannel(this: IServerSettingsDocument): Promise<void>;
+
+    addBadge(
+        this: IServerSettingsDocument,
+        {
+            badgeUri,
+            badgeName,
+            tier,
+            description,
+        }: { badgeUri: string; badgeName: string; tier: number; description: string }
+    ): Promise<void>;
+    removeBadge(this: IServerSettingsDocument, { badgeName }: { badgeName: string }): Promise<void>;
 }
 export interface IServerSettingsModel extends Model<IServerSettingsDocument> {
     findOneOrCreate(this: IServerSettingsModel, { guildId }: { guildId: string }): Promise<IServerSettingsDocument>;

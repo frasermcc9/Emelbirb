@@ -1,13 +1,13 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message, Channel, TextChannel } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/ServerSettings/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
 
 export default class DisableLogCommand extends Command {
     constructor(client: CommandoClient) {
         super(client, {
             name: "disablelog",
             aliases: ["logoff", "stoplog"],
-            group: "fun",
+            group: "log",
             memberName: "disablelog",
             description: "Replies with a lenny face",
             userPermissions: ["ADMINISTRATOR"],

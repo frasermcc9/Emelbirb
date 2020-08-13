@@ -93,6 +93,32 @@ export async function removeLogChannel(this: IServerSettingsDocument): Promise<v
     await this.setLastUpdated();
 }
 
+export async function addBadge(
+    this: IServerSettingsDocument,
+    {
+        badgeUri,
+        badgeName,
+        tier,
+        description,
+    }: { badgeUri: string; badgeName: string; tier: number; description: string }
+): Promise<void> {
+    if (this.badges == undefined) {
+        this.badges = {};
+    }
+    this.badges[badgeName] = { uri: badgeUri, name: badgeName, tier: tier, description: description };
+    this.markModified("badges");
+    return await this.setLastUpdated();
+}
+
+export async function removeBadge(this: IServerSettingsDocument, { badgeName }: { badgeName: string }): Promise<void> {
+    if (this.badges == undefined) {
+        this.badges = {};
+    }
+    delete this.badges[badgeName];
+    this.markModified("badges");
+    return await this.setLastUpdated();
+}
+
 //Section: Static Methods (for model)
 
 export async function findOneOrCreate(
@@ -106,6 +132,7 @@ export async function findOneOrCreate(
             suggestions: { counter: 0 },
             guildCommands: new Map(),
             logging: {},
+            badges: {},
         });
         Bot.Get.refreshCachePoint(record);
     }

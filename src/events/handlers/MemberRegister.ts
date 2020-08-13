@@ -1,9 +1,9 @@
 import { BotEvent } from "../Events.interface";
 import { Bot } from "../../Bot";
-import { ServerSettingsModel } from "../../database/models/ServerSettings/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import Log from "../../helpers/Log";
-import { UserSettingsModel } from "../../database/models/UserSettings/UserSettings.model";
+import { UserSettingsModel } from "../../database/models/Client/UserSettings.model";
 
 /**
  * Gets list of members from the spreadsheet

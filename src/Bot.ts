@@ -4,8 +4,8 @@ import path from "path";
 import dotenv from "dotenv";
 import { EventManager } from "./EventManager";
 import { ReactionCollector, MessageCollector as Function, Message } from "discord.js";
-import { ServerSettingsModel, IServerSettingsDocument } from "./database/models/ServerSettings/ServerSettings.model";
-import { IUserSettingsDocument } from "./database/models/UserSettings/UserSettings.model";
+import { ServerSettingsModel, IServerSettingsDocument } from "./database/models/Server/ServerSettings.model";
+import { IUserSettingsDocument } from "./database/models/Client/UserSettings.model";
 
 dotenv.config();
 export class Bot extends CommandoClient {
@@ -69,6 +69,7 @@ export class Bot extends CommandoClient {
                 ["tournament", "Utility tournament commands"],
                 ["voting", "Commands for voting"],
                 ["log", "Commands for server logging"],
+                ["badges", "Commands for server badges"],
             ])
 
             .registerCommandsIn({
