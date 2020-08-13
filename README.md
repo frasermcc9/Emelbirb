@@ -8,7 +8,7 @@ A Discord bot for the University of Auckland Esports Club
 ### Required Software To Run
 
 Requires 
-* [NodeJs 14](https://nodejs.org/en/)
+* [NodeJs 14.x.x](https://nodejs.org/en/)
 * [MongoDb 4.x.x](https://www.mongodb.com/try/download/community?tck=docs_server)
 * [Your Own Discord Bot](https://discord.com/developers/applications)
 
