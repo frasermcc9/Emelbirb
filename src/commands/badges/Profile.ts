@@ -35,7 +35,10 @@ export default class ProfileCommand extends Command {
         const equippedBadges = userSettings.equippedBadges();
         const iterator = ["p1", "p2", "p3", "p4", "p5"];
 
-        const base = sharp("resources//bg-space.png");
+        const userBackground = await userSettings.getBackground();
+        const userBackgroundImg = (await axios({ url: userBackground, responseType: "arraybuffer" })).data as Buffer;
+        const base = sharp(userBackgroundImg);
+
         const bufferArray: Promise<CompositeImage>[] = [];
 
         bufferArray.push(this.fetchFg());
