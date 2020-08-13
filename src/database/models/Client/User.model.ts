@@ -16,6 +16,8 @@ export interface IUserSettings {
             p4: string | null;
             p5: string | null;
         };
+        background?: string;
+        backgrounds?: string[];
     };
     dateOfEntry?: Date;
     lastUpdated?: Date;
@@ -31,6 +33,10 @@ export interface IUserSettingsDocument extends IUserSettings, Document {
         { badge, position }: { badge: string; position: keyof IActiveBadges }
     ): Promise<boolean>;
     unequipBadge(this: IUserSettingsDocument, { position }: { position: keyof IActiveBadges }): Promise<void>;
+
+    setBackground(this: IUserSettingsDocument, { uri, force }: { uri: string; force?: boolean }): Promise<void>;
+    getBackground(this: IUserSettingsDocument): Promise<string>;
+    buyBackground(this: IUserSettingsDocument, { bg }: { bg: string }): Promise<void>;
 }
 export interface IUserSettingsModel extends Model<IUserSettingsDocument> {
     findOneOrCreate(this: IUserSettingsModel, { userId }: { userId: string }): Promise<IUserSettingsDocument>;

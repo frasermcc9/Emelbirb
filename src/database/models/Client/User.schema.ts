@@ -13,6 +13,8 @@ const UserSettingsSchema = new Schema({
             p4: String,
             p5: String,
         },
+        background: { type: String, required: false },
+        backgrounds: [String],
     },
     dateOfEntry: {
         type: Date,
@@ -34,5 +36,9 @@ UserSettingsSchema.methods.equipBadge = UserSettingsMethods.equipBadge;
 UserSettingsSchema.methods.giveBadge = UserSettingsMethods.giveBadge;
 UserSettingsSchema.methods.unequipBadge = UserSettingsMethods.unequipBadge;
 UserSettingsSchema.methods.equippedBadges = UserSettingsMethods.equippedBadges;
+
+UserSettingsSchema.methods.getBackground = UserSettingsMethods.getBackground;
+UserSettingsSchema.methods.setBackground = UserSettingsMethods.setBackground;
+UserSettingsSchema.methods.buyBackground = UserSettingsMethods.buyBackground;
 
 export default UserSettingsSchema;

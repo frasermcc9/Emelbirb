@@ -1,6 +1,8 @@
 import { Bot } from "../../../Bot";
 import { IUserSettingsDocument, IUserSettingsModel } from "./User.model";
 import { IActiveBadges } from "../../../structures/Badges";
+import { GlobalModel } from "../Global/Global.model";
+import { findBestMatch } from "string-similarity";
 
 //Section: Instance Methods (for document)
 
@@ -58,6 +60,38 @@ export abstract class UserSettingsMethods {
         { position }: { position: keyof IActiveBadges }
     ): Promise<void> {
         this.badges.equipped[position] = null;
+        this.markModified("badges");
+        return await this.setLastUpdated();
+    }
+
+    static async setBackground(
+        this: IUserSettingsDocument,
+        { uri, force }: { uri: string; force?: boolean }
+    ): Promise<void> {
+        if (this.badges.backgrounds?.includes(uri) || force) {
+            this.badges.background = uri;
+            this.markModified("badges");
+            return await this.setLastUpdated();
+        }
+    }
+
+    static async getBackground(this: IUserSettingsDocument): Promise<string> {
+        let data = this.badges.background;
+        if (!data) {
+            data = (await GlobalModel.getSettings()).backgrounds.default;
+        }
+        return data;
+    }
+
+    static async buyBackground(this: IUserSettingsDocument, { bg }: { bg: string }): Promise<void> {
+        const globalModel = await GlobalModel.getSettings();
+        const options = Object.keys(globalModel.backgrounds.list);
+        const candidate = findBestMatch(bg, options).bestMatch.target;
+        const query = globalModel.backgrounds.list[candidate];
+        if (this.badges.backgrounds == undefined) {
+            this.badges.backgrounds = [];
+        }
+        this.badges.backgrounds.push(query.uri);
         this.markModified("badges");
         return await this.setLastUpdated();
     }
