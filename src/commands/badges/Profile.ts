@@ -2,8 +2,8 @@ import axios from "axios";
 import { Message, MessageAttachment, User } from "discord.js";
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import sharp from "sharp";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
-import { UserSettingsModel } from "../../database/models/Client/UserSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
+import { UserSettingsModel } from "../../database/models/Client/User.model";
 import { generate } from "text-to-image";
 
 export default class ProfileCommand extends Command {

@@ -1,6 +1,6 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message, GuildChannel, TextChannel } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 
 export default class SuggestionChannelCommand extends Command {
     constructor(client: CommandoClient) {

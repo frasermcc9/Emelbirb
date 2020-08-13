@@ -1,7 +1,7 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message } from "discord.js";
 import { Bot } from "../../Bot";
-import { UserSettingsModel } from "../../database/models/Client/UserSettings.model";
+import { UserSettingsModel } from "../../database/models/Client/User.model";
 
 export default class RegisterVoteCommand extends Command {
     constructor(client: CommandoClient) {

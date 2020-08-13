@@ -19,7 +19,7 @@ import {
     removeLogChannel,
     addBadge,
     removeBadge,
-} from "./ServerSettings.functions";
+} from "./Server.functions";
 
 const ServerSettingsSchema = new Schema({
     guildId: { type: String, unique: true },

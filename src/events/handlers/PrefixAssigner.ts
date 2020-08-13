@@ -2,7 +2,7 @@ import { BotEvent } from "../Events.interface";
 import { Bot } from "../../Bot";
 import Log from "../../helpers/Log";
 import { GuildMember } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 import { CommandoGuild } from "discord.js-commando";
 
 export default class PrefixAssigner implements BotEvent {

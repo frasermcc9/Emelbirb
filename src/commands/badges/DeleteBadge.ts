@@ -1,6 +1,6 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message, User, MessageReaction, ReactionCollector } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 import { Bot } from "../../Bot";
 import { findBestMatch } from "string-similarity";
 

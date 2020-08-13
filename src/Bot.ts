@@ -4,8 +4,8 @@ import path from "path";
 import dotenv from "dotenv";
 import { EventManager } from "./EventManager";
 import { ReactionCollector, MessageCollector as Function, Message } from "discord.js";
-import { ServerSettingsModel, IServerSettingsDocument } from "./database/models/Server/ServerSettings.model";
-import { IUserSettingsDocument } from "./database/models/Client/UserSettings.model";
+import { ServerSettingsModel, IServerSettingsDocument } from "./database/models/Server/Server.model";
+import { IUserSettingsDocument } from "./database/models/Client/User.model";
 
 dotenv.config();
 export class Bot extends CommandoClient {

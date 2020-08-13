@@ -2,7 +2,7 @@ import { BotEvent } from "../Events.interface";
 import { Bot } from "../../Bot";
 import Log from "../../helpers/Log";
 import { GuildMember, GuildChannel } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 
 export default class UpdateMemberCount implements BotEvent {
     private client: Bot = Bot.Get;

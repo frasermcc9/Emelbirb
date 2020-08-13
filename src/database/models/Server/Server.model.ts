@@ -1,5 +1,5 @@
 import { model, Model, Document } from "mongoose";
-import ServerSettingsSchema from "./ServerSettings.schema";
+import ServerSettingsSchema from "./Server.schema";
 import { IBadge } from "../../../structures/Badges";
 
 export const ServerSettingsModel = model<IServerSettingsDocument>(

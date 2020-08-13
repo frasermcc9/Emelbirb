@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { findOneOrCreate, UserSettingsMethods } from "./UserSettings.functions";
+import { findOneOrCreate, UserSettingsMethods } from "./User.functions";
 
 const UserSettingsSchema = new Schema({
     userId: { type: String, required: true },

@@ -1,9 +1,9 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message, User, MessageCollector, ReactionCollector, MessageReaction } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 import { Bot } from "../../Bot";
 import { findBestMatch } from "string-similarity";
-import { UserSettingsModel } from "../../database/models/Client/UserSettings.model";
+import { UserSettingsModel } from "../../database/models/Client/User.model";
 
 export default class GiveBadgeCommand extends Command {
     constructor(client: CommandoClient) {

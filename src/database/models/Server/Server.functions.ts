@@ -1,4 +1,4 @@
-import { IServerSettingsDocument, IServerSettingsModel } from "./ServerSettings.model";
+import { IServerSettingsDocument, IServerSettingsModel } from "./Server.model";
 import { Bot } from "../../../Bot";
 import { throws } from "assert";
 

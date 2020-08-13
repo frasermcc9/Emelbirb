@@ -1,6 +1,6 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message, VoiceChannel, Channel } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 
 export default class MemberCounterCommand extends Command {
     constructor(client: CommandoClient) {

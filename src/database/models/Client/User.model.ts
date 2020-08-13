@@ -1,5 +1,5 @@
 import { model, Model, Document } from "mongoose";
-import UserSettingsSchema from "./UserSettings.schema";
+import UserSettingsSchema from "./User.schema";
 import { IActiveBadges } from "../../../structures/Badges";
 
 export const UserSettingsModel = model<IUserSettingsDocument>("userSettings", UserSettingsSchema) as IUserSettingsModel;

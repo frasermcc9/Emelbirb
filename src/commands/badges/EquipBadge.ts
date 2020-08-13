@@ -1,8 +1,8 @@
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message, User, MessageReaction, ReactionCollector } from "discord.js";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 import { Bot } from "../../Bot";
-import { UserSettingsModel } from "../../database/models/Client/UserSettings.model";
+import { UserSettingsModel } from "../../database/models/Client/User.model";
 import { findBestMatch } from "string-similarity";
 
 export default class EquipBadgeCommand extends Command {

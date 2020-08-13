@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from "discord.js";
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
-import { UserSettingsModel } from "../../database/models/Client/UserSettings.model";
-import { ServerSettingsModel } from "../../database/models/Server/ServerSettings.model";
+import { UserSettingsModel } from "../../database/models/Client/User.model";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 import { IBadge } from "../../structures/Badges";
 
 export default class AllBadgesCommand extends Command {

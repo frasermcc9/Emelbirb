@@ -1,5 +1,5 @@
 import { Bot } from "../../../Bot";
-import { IUserSettingsDocument, IUserSettingsModel } from "./UserSettings.model";
+import { IUserSettingsDocument, IUserSettingsModel } from "./User.model";
 import { IActiveBadges } from "../../../structures/Badges";
 
 //Section: Instance Methods (for document)
