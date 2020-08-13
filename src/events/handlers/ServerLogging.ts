@@ -20,6 +20,8 @@ export default class ServerLogging implements BotEvent {
                 const addedPerms = new Permissions(added).toArray();
                 const removedPerms = new Permissions(removed).toArray();
 
+                if (addedPerms.length == 0 && removedPerms.length == 0) return;
+
                 const output = new MessageEmbed()
                     .setTitle("Role Update")
                     .setDescription(`LOG: ${newRole.name} PERMISSION UPDATE`)
