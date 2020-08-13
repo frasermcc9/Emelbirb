@@ -5,7 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "start": "node build/index.js",
-    "watch": "tsc -p tsconfig.json -w"
+    "watch": "tsc -p tsconfig.json -w",
+    "rebuild":"rm -r ./build && tsc && echo done!"
   },
   "author": "Fraser McCallum",
   "license": "MIT",
