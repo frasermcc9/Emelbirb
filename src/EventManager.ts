@@ -1,8 +1,11 @@
 import { BotEvent } from "./events/Events.interface";
 import Log from "./helpers/Log";
+import { EventEmitter } from "events";
 
-export class EventManager {
-    constructor() {}
+export class EventManager extends EventEmitter {
+    constructor() {
+        super();
+    }
 
     public init() {
         const events = require("require-all")({
@@ -14,4 +17,17 @@ export class EventManager {
         }
         Log.info("Bot", "Bot events registered successfully");
     }
+
+    public alert<K extends keyof EventTypes>(event: K, args: EventTypes[K]) {
+        this.emit(event, args);
+    }
+
+    public on<K extends keyof EventTypes>(event: K, listener: (args: EventTypes[K]) => void): this {
+        this.on(event, listener);
+        return this;
+    }
+}
+
+interface EventTypes {
+    levelUp: { userId: string; level: number; guildId?: string };
 }
