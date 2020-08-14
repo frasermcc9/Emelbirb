@@ -8,7 +8,7 @@ export default class CreateBadgeCommand extends Command {
         super(client, {
             name: "createbadge",
             aliases: ["makebadge"],
-            group: "badges",
+            group: "profile",
             memberName: "createbadge",
             description: "Creates a badge in this guild.",
             userPermissions: ["ADMINISTRATOR"],

@@ -9,7 +9,7 @@ export default class GiveBadgeCommand extends Command {
     constructor(client: CommandoClient) {
         super(client, {
             name: "givebadge",
-            group: "badges",
+            group: "profile",
             memberName: "givebadge",
             description: "Gives a badge to a user in this guild.",
             userPermissions: ["ADMINISTRATOR"],

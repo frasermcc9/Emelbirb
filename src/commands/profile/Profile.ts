@@ -5,13 +5,15 @@ import sharp from "sharp";
 import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 import { UserSettingsModel } from "../../database/models/Client/User.model";
 import { generate } from "text-to-image";
+import { expProgress } from "../../helpers/Graphics";
+import { ExpUtility } from "../../structures/Exp";
 
 export default class ProfileCommand extends Command {
     constructor(client: CommandoClient) {
         super(client, {
             name: "profile",
             aliases: ["viewbadges", "view-badges", "badges"],
-            group: "badges",
+            group: "profile",
             memberName: "profile",
             description: "View your equipped badges.",
             guildOnly: true,
@@ -43,6 +45,9 @@ export default class ProfileCommand extends Command {
 
         bufferArray.push(this.fetchFg());
 
+        const exp = ExpUtility.currentLevelData(userSettings.stats.exp);
+        bufferArray.push(this.fetchExp(exp.percent));
+
         let i = -1;
         for (const key of iterator) {
             if (Object.prototype.hasOwnProperty.call(equippedBadges, key)) {
@@ -53,6 +58,8 @@ export default class ProfileCommand extends Command {
                 bufferArray.push(this.fetchImg(img, { xPos: 24, yPos: 312 + 85 * i, xResize: 80, yResize: 80 }));
             }
         }
+
+        expProgress(0.5);
 
         const userAvatar = user.avatarURL() ?? user.defaultAvatarURL;
         bufferArray.push(this.fetchImg(userAvatar, { xPos: 19, yPos: 117, xResize: 184, yResize: 184 }));
@@ -77,11 +84,20 @@ export default class ProfileCommand extends Command {
     private fetchFg(): Promise<CompositeImage> {
         return new Promise(async (res, rej) => {
             const fgReq = await axios({
-                url: "https://cdn.discordapp.com/attachments/743473692125954138/743785645280854058/profile-base.png",
+                url: "https://cdn.discordapp.com/attachments/743473692125954138/743845283749953606/profile-base.png",
                 responseType: "arraybuffer",
             });
             const fg = await sharp(fgReq.data).toBuffer();
             res({ input: fg, top: 115, left: 17 });
+        });
+    }
+
+    private fetchExp(percent: number): Promise<CompositeImage> {
+        return new Promise(async (res, rej) => {
+            const bar = expProgress(percent);
+            const pngBuffer = Buffer.from(bar.split(",")[1], "base64");
+            const buffer = await sharp(pngBuffer).toBuffer();
+            res({ input: buffer, top: 651, left: 243 });
         });
     }
 

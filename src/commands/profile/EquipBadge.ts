@@ -10,7 +10,7 @@ export default class EquipBadgeCommand extends Command {
         super(client, {
             name: "equipbadge",
             aliases: ["activatebadge"],
-            group: "badges",
+            group: "profile",
             memberName: "equipbadge",
             description: "Equips one of your badges.",
             guildOnly: true,

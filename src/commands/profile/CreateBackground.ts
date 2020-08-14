@@ -7,7 +7,7 @@ export default class CreateBackgroundCommand extends Command {
         super(client, {
             name: "createbackground",
             aliases: ["createbg"],
-            group: "badges",
+            group: "profile",
             memberName: "createbackground",
             description: "Creates a background globally.",
             guildOnly: true,

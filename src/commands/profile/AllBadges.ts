@@ -9,7 +9,7 @@ export default class AllBadgesCommand extends Command {
         super(client, {
             name: "allbadges",
             aliases: ["allbadge"],
-            group: "badges",
+            group: "profile",
             memberName: "allbadges",
             description: "View all your badges.",
             guildOnly: true,

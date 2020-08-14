@@ -9,7 +9,7 @@ export default class DeleteBadgeCommand extends Command {
         super(client, {
             name: "deletebadge",
             aliases: ["removebadge", "delbadge"],
-            group: "badges",
+            group: "profile",
             memberName: "deletebadge",
             description: "Deletes a badge in this guild.",
             userPermissions: ["ADMINISTRATOR"],
