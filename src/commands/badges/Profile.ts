@@ -76,7 +76,11 @@ export default class ProfileCommand extends Command {
      */
     private fetchFg(): Promise<CompositeImage> {
         return new Promise(async (res, rej) => {
-            const fg = await sharp("resources//profile-base.png").toBuffer();
+            const fgReq = await axios({
+                url: "https://cdn.discordapp.com/attachments/743473692125954138/743785645280854058/profile-base.png",
+                responseType: "arraybuffer",
+            });
+            const fg = await sharp(fgReq.data).toBuffer();
             res({ input: fg, top: 115, left: 17 });
         });
     }
