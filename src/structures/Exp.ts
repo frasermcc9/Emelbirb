@@ -7,13 +7,25 @@ export abstract class ExpUtility {
         return Math.ceil(this.expFunction(this.level(exp) + 1) - exp);
     }
 
+    public static ExpThroughLevel(exp: number): number {
+        const level = this.inverseExpFunction(exp);
+        const baseXp = this.expFunction(level);
+        return exp - baseXp;
+    }
+
+    public static currentLevelData(exp: number): { percent: number; current: number; req: number } {
+        const current = this.ExpThroughLevel(exp);
+        const toNext = this.ExpToNextLevel(exp);
+        return { current: current, req: toNext, percent: current / (current + toNext) };
+    }
+
     /**
      * Returns cumulative xp required to reach a level
      * @param x the level
      * @returns the cumulative xp to reach this level
      */
     private static expFunction(x: number) {
-        return (5 / 9) * (x + 1) * (x ** 2 - 4 * x + 400);
+        return (5 / 9) * (x + 1) * (x ** 2 - 4 * x + 250);
     }
     /**
      * Returns the level that a player with experience `x` would be
