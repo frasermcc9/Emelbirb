@@ -1,0 +1,31 @@
+import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { Message } from "discord.js";
+import { ServerSettingsModel } from "../../database/models/Server/Server.model";
+
+export default class EditPrefixCommand extends Command {
+    constructor(client: CommandoClient) {
+        super(client, {
+            name: "editprefix",
+            group: "config",
+            memberName: "editprefix",
+            description: "Set this server's prefix.",
+            userPermissions: ["ADMINISTRATOR"],
+            args: [
+                {
+                    key: "pref",
+                    prompt: "What would you like to set the command prefix to?",
+                    type: "string",
+                    validate: (s: string) => s.length < 5,
+                },
+            ],
+        });
+    }
+
+    async run(message: CommandoMessage, { pref }: { pref: string }): Promise<Message> {
+        const guildSettings = await ServerSettingsModel.findOneOrCreate({ guildId: message.guild.id });
+        pref = pref.toLowerCase();
+        guildSettings.setPrefix({ prefix: pref });
+        message.guild.commandPrefix = pref;
+        return message.channel.send(`This server's command prefix is now ${pref}!`);
+    }
+}

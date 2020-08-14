@@ -9,7 +9,7 @@ export default class DisableLogCommand extends Command {
             aliases: ["logoff", "stoplog"],
             group: "log",
             memberName: "disablelog",
-            description: "Replies with a lenny face",
+            description: "Turns off the log.",
             userPermissions: ["ADMINISTRATOR"],
         });
     }

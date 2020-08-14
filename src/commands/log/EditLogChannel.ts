@@ -2,21 +2,20 @@ import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import { Message, Channel, TextChannel } from "discord.js";
 import { ServerSettingsModel } from "../../database/models/Server/Server.model";
 
-export default class LogChannelCommand extends Command {
+export default class EditLogChannelCommand extends Command {
     constructor(client: CommandoClient) {
         super(client, {
-            name: "logchannel",
-            aliases: ["log", "logger", "loggingchannel"],
+            name: "editlogchannel",
+            aliases: ["editlog", "editlogger", "editloggingchannel"],
             group: "log",
-            memberName: "logchannel",
-            description: "Sets the log channel.",
+            memberName: "editlogchannel",
+            description: "Changes the log channel.",
             userPermissions: ["ADMINISTRATOR"],
             args: [
                 {
                     key: "logChannel",
                     prompt: "What would you like to set the log channel to?",
                     type: "channel",
-                    default: new Channel(client, { type: "text" }),
                 },
             ],
         });
@@ -24,16 +23,6 @@ export default class LogChannelCommand extends Command {
 
     async run(message: CommandoMessage, { logChannel }: { logChannel: Channel }): Promise<Message> {
         const settings = await ServerSettingsModel.findOneOrCreate({ guildId: message.guild.id });
-        if (logChannel.id == undefined) {
-            const currentChannelId = await settings.getLogChannel();
-            let currentChannel: string;
-            if (currentChannelId == undefined) {
-                currentChannel = "not set up";
-            } else {
-                currentChannel = message.guild.channels.resolve(currentChannelId)!.name;
-            }
-            return message.channel.send(`This servers log channel is **${currentChannel}**.`);
-        }
 
         if (logChannel.type != "text") {
             return message.channel.send("Log channel must be a text channel.");
