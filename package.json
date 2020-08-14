@@ -6,17 +6,17 @@
   "scripts": {
     "start": "node build/index.js",
     "watch": "tsc -p tsconfig.json -w",
-    "rebuild":"rm -rf ./build && tsc && echo done!"
+    "rebuild": "rm -rf ./build && tsc && echo done!"
   },
   "author": "Fraser McCallum",
   "license": "MIT",
   "dependencies": {
-    "@types/axios": "^0.14.0",
     "@types/node": "^14.0.26",
     "@types/require-all": "^3.0.1",
     "@types/sharp": "^0.25.1",
     "@types/string-similarity": "^3.0.0",
     "axios": "^0.19.2",
+    "canvas": "^2.6.1",
     "chalk": "^4.1.0",
     "discord.js": "^12.2.0",
     "discord.js-commando": "git+https://github.com/discordjs/Commando.git",
