@@ -13,7 +13,6 @@ export default class SetBackgroundCommand extends Command {
             memberName: "setbackground",
             description: "Set your profile background.",
             guildOnly: true,
-            ownerOnly: true,
             args: [
                 {
                     key: "bgName",
