@@ -68,11 +68,14 @@ export abstract class UserSettingsMethods {
     static async setBackground(
         this: IUserSettingsDocument,
         { uri, force }: { uri: string; force?: boolean }
-    ): Promise<void> {
+    ): Promise<boolean> {
         if (this.badges.backgrounds?.includes(uri) || force) {
             this.badges.background = uri;
             this.markModified("badges");
-            return await this.setLastUpdated();
+            await this.setLastUpdated();
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -84,7 +87,7 @@ export abstract class UserSettingsMethods {
         return data;
     }
 
-    static async buyBackground(this: IUserSettingsDocument, { bg }: { bg: string }): Promise<void> {
+    static async buyBackground(this: IUserSettingsDocument, { bg }: { bg: string }): Promise<boolean> {
         const globalModel = await GlobalModel.getSettings();
         const options = Object.keys(globalModel.backgrounds.list);
         const candidate = findBestMatch(bg, options).bestMatch.target;
@@ -92,9 +95,17 @@ export abstract class UserSettingsMethods {
         if (this.badges.backgrounds == undefined) {
             this.badges.backgrounds = [];
         }
-        this.badges.backgrounds.push(query.uri);
-        this.markModified("badges");
-        return await this.setLastUpdated();
+        if (this.badges.backgrounds?.includes(query.uri)) {
+            return false;
+        }
+        if (await this.decrementCredits(globalModel.backgrounds.list[candidate].cost)) {
+            this.badges.backgrounds.push(query.uri);
+            this.markModified("badges");
+            await this.setLastUpdated();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     static async incrementStats(

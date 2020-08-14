@@ -4,14 +4,14 @@ import { GlobalModel } from "../../database/models/Global/Global.model";
 import { UserSettingsModel } from "../../database/models/Client/User.model";
 import { findBestMatch } from "string-similarity";
 
-export default class SetBackgroundCommand extends Command {
+export default class BuyBackgroundCommand extends Command {
     constructor(client: CommandoClient) {
         super(client, {
-            name: "setbackground",
-            aliases: ["setbg"],
+            name: "buybackground",
+            aliases: ["buybg"],
             group: "profile",
-            memberName: "setbackground",
-            description: "Set your profile background.",
+            memberName: "buybackground",
+            description: "Buy a profile background.",
             guildOnly: true,
             args: [
                 {
@@ -26,22 +26,18 @@ export default class SetBackgroundCommand extends Command {
 
     async run(message: CommandoMessage, { bgName }: CommandArguments): Promise<Message> {
         const user = await UserSettingsModel.findOneOrCreate({ userId: message.author.id });
-        const globalModel = await GlobalModel.getSettings();
 
-        if (bgName.toLowerCase() == "default") {
-            await user.setBackground({ uri: globalModel.backgrounds.default, force: true });
-            return message.channel.send("Your background has been reset!");
-        }
+        const globalModel = await GlobalModel.getSettings();
 
         const bgs = Object.keys(globalModel.backgrounds.list);
         const candidate = findBestMatch(bgName, bgs).bestMatch.target;
-        const url = globalModel.backgrounds.list[candidate].uri;
+        //const url = globalModel.backgrounds.list[candidate].uri;
 
-        const result = await user.setBackground({ uri: url });
+        const result = await user.buyBackground({ bg: bgName });
         if (result) {
-            return message.channel.send(`Your background has been set to ${candidate}!`);
+            return message.channel.send(`You have bought the background **${candidate}**!`);
         } else {
-            return message.channel.send(`You do not own the background **${candidate}**.`);
+            return message.channel.send(`Either you already own **${candidate}**, or you do not have enough credits.`);
         }
     }
 }

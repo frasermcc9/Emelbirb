@@ -38,9 +38,9 @@ export interface IUserSettingsDocument extends IUserSettings, Document {
     ): Promise<boolean>;
     unequipBadge(this: IUserSettingsDocument, { position }: { position: keyof IActiveBadges }): Promise<void>;
 
-    setBackground(this: IUserSettingsDocument, { uri, force }: { uri: string; force?: boolean }): Promise<void>;
+    setBackground(this: IUserSettingsDocument, { uri, force }: { uri: string; force?: boolean }): Promise<boolean>;
     getBackground(this: IUserSettingsDocument): Promise<string>;
-    buyBackground(this: IUserSettingsDocument, { bg }: { bg: string }): Promise<void>;
+    buyBackground(this: IUserSettingsDocument, { bg }: { bg: string }): Promise<boolean>;
 
     incrementStats(this: IUserSettingsDocument, exp: number, cred: number, guildId?: string): Promise<void>;
     decrementCredits(this: IUserSettingsDocument, n: number): Promise<boolean>;
