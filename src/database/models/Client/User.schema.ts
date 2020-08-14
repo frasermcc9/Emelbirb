@@ -16,6 +16,10 @@ const UserSettingsSchema = new Schema({
         background: { type: String, required: false },
         backgrounds: [String],
     },
+    stats: {
+        credits: Number,
+        exp: Number,
+    },
     dateOfEntry: {
         type: Date,
         default: new Date(),
@@ -40,5 +44,9 @@ UserSettingsSchema.methods.equippedBadges = UserSettingsMethods.equippedBadges;
 UserSettingsSchema.methods.getBackground = UserSettingsMethods.getBackground;
 UserSettingsSchema.methods.setBackground = UserSettingsMethods.setBackground;
 UserSettingsSchema.methods.buyBackground = UserSettingsMethods.buyBackground;
+
+UserSettingsSchema.methods.decrementCredits = UserSettingsMethods.decrementCredits;
+UserSettingsSchema.methods.getStats = UserSettingsMethods.getStats;
+UserSettingsSchema.methods.incrementStats = UserSettingsMethods.incrementStats;
 
 export default UserSettingsSchema;

@@ -19,6 +19,10 @@ export interface IUserSettings {
         background?: string;
         backgrounds?: string[];
     };
+    stats: {
+        credits: number;
+        exp: number;
+    };
     dateOfEntry?: Date;
     lastUpdated?: Date;
 }
@@ -37,7 +41,12 @@ export interface IUserSettingsDocument extends IUserSettings, Document {
     setBackground(this: IUserSettingsDocument, { uri, force }: { uri: string; force?: boolean }): Promise<void>;
     getBackground(this: IUserSettingsDocument): Promise<string>;
     buyBackground(this: IUserSettingsDocument, { bg }: { bg: string }): Promise<void>;
+
+    incrementStats(this: IUserSettingsDocument, exp: number, cred: number, guildId?: string): Promise<void>;
+    decrementCredits(this: IUserSettingsDocument, n: number): Promise<boolean>;
+    getStats(this: IUserSettingsDocument): { credits: number; exp: number };
 }
+
 export interface IUserSettingsModel extends Model<IUserSettingsDocument> {
     findOneOrCreate(this: IUserSettingsModel, { userId }: { userId: string }): Promise<IUserSettingsDocument>;
 }

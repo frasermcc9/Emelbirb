@@ -3,6 +3,7 @@ import { IUserSettingsDocument, IUserSettingsModel } from "./User.model";
 import { IActiveBadges } from "../../../structures/Badges";
 import { GlobalModel } from "../Global/Global.model";
 import { findBestMatch } from "string-similarity";
+import { ExpUtility } from "../../../structures/Exp";
 
 //Section: Instance Methods (for document)
 
@@ -95,6 +96,48 @@ export abstract class UserSettingsMethods {
         this.markModified("badges");
         return await this.setLastUpdated();
     }
+
+    static async incrementStats(
+        this: IUserSettingsDocument,
+        exp: number,
+        cred: number,
+        guildId?: string
+    ): Promise<void> {
+        if (this.stats?.credits == undefined || this.stats?.exp == undefined) {
+            this.stats = { credits: 0, exp: 0 };
+        }
+        if (this.stats.exp + exp >= ExpUtility.ExpToNextLevel(exp)) {
+            //the player levelled up
+            Bot.Get.EventManager.alert("levelUp", {
+                userId: this.userId,
+                level: ExpUtility.level(exp) + 1,
+                guildId: guildId,
+            });
+        }
+        this.stats.credits += cred;
+        this.stats.exp += exp;
+        this.markModified("stats");
+        await this.setLastUpdated();
+    }
+
+    static async decrementCredits(this: IUserSettingsDocument, n: number): Promise<boolean> {
+        if (this.stats?.credits == undefined || this.stats?.exp == undefined) {
+            this.stats = { credits: 0, exp: 0 };
+        }
+        if (this.stats.credits - n < 0) {
+            return false;
+        }
+        this.stats.credits -= n;
+        this.markModified("stats");
+        await this.setLastUpdated();
+        return true;
+    }
+    static getStats(this: IUserSettingsDocument): { credits: number; exp: number } {
+        if (this.stats?.credits == undefined || this.stats?.exp == undefined) {
+            this.stats = { credits: 0, exp: 0 };
+        }
+        return { credits: this.stats.credits, exp: this.stats.exp };
+    }
 }
 
 //Section: Static Methods (for model)
@@ -108,6 +151,7 @@ export async function findOneOrCreate(
         record = await this.create({
             userId: userId,
             badges: { collection: new Map(), equipped: { p1: null, p2: null, p3: null, p4: null, p5: null } },
+            stats: { credits: 0, exp: 0 },
         });
     }
     return record;
