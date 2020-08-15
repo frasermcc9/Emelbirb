@@ -7,6 +7,7 @@ import { UserSettingsModel } from "../../database/models/Client/User.model";
 import { generate } from "text-to-image";
 import { expProgress } from "../../helpers/Graphics";
 import { ExpUtility } from "../../structures/Exp";
+import { delimit } from "../../helpers/Utility";
 
 export default class ProfileCommand extends Command {
     constructor(client: CommandoClient) {
@@ -45,8 +46,19 @@ export default class ProfileCommand extends Command {
 
         bufferArray.push(this.fetchFg());
 
-        const exp = ExpUtility.currentLevelData(userSettings.stats.exp);
-        bufferArray.push(this.fetchExp(exp.percent));
+        const levelData = ExpUtility.currentLevelData(userSettings.stats.exp);
+        bufferArray.push(this.fetchExp(levelData.percent));
+        bufferArray.push(
+            this.fetchExpText(
+                `XP: ${delimit(levelData.current.toFixed(0))} / ${delimit(
+                    (levelData.req + levelData.current).toFixed(0)
+                )}`
+            )
+        );
+
+        const level = ExpUtility.level(userSettings.stats.exp);
+        bufferArray.push(this.fetchLevel(level));
+        bufferArray.push(this.levelText());
 
         let i = -1;
         for (const key of iterator) {
@@ -58,8 +70,6 @@ export default class ProfileCommand extends Command {
                 bufferArray.push(this.fetchImg(img, { xPos: 24, yPos: 312 + 85 * i, xResize: 80, yResize: 80 }));
             }
         }
-
-        expProgress(0.5);
 
         const userAvatar = user.avatarURL() ?? user.defaultAvatarURL;
         bufferArray.push(this.fetchImg(userAvatar, { xPos: 19, yPos: 117, xResize: 184, yResize: 184 }));
@@ -97,7 +107,56 @@ export default class ProfileCommand extends Command {
             const bar = expProgress(percent);
             const pngBuffer = Buffer.from(bar.split(",")[1], "base64");
             const buffer = await sharp(pngBuffer).toBuffer();
-            res({ input: buffer, top: 651, left: 243 });
+            res({ input: buffer, top: 665, left: 243 });
+        });
+    }
+    private fetchExpText(text: string): Promise<CompositeImage> {
+        return new Promise(async (res, rej) => {
+            const nameImg = await generate(text, {
+                fontSize: 24,
+                lineHeight: 28,
+                textColor: "#2e2e2e",
+                bgColor: "rgba(255, 255, 255, 0)",
+                margin: 0,
+                maxWidth: 400,
+                fontWeight: "300",
+                textAlign: "center",
+            });
+            const pngBuffer = Buffer.from(nameImg.split(",")[1], "base64");
+            const buffer = await sharp(pngBuffer).toBuffer();
+            res({ input: buffer, left: 250, top: 671 });
+        });
+    }
+    private levelText(): Promise<CompositeImage> {
+        return new Promise(async (res, rej) => {
+            const nameImg = await generate("LEVEL", {
+                fontSize: 30,
+                lineHeight: 32,
+                textColor: "#2e2e2e",
+                bgColor: "rgba(255, 255, 255, 0)",
+                margin: 0,
+                maxWidth: 100,
+                fontWeight: "300",
+            });
+            const pngBuffer = Buffer.from(nameImg.split(",")[1], "base64");
+            const buffer = await sharp(pngBuffer).toBuffer();
+            res({ input: buffer, left: 130, top: 640 });
+        });
+    }
+    private fetchLevel(level: number): Promise<CompositeImage> {
+        return new Promise(async (res, rej) => {
+            const nameImg = await generate(level.toString(), {
+                fontSize: 48,
+                lineHeight: 50,
+                textColor: "#323232",
+                bgColor: "rgba(255, 255, 255, 0)",
+                margin: 0,
+                maxWidth: 100,
+                fontWeight: "800",
+            });
+            const pngBuffer = Buffer.from(nameImg.split(",")[1], "base64");
+            const buffer = await sharp(pngBuffer).toBuffer();
+            res({ input: buffer, left: 142, top: 675 });
         });
     }
 
