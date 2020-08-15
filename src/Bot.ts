@@ -73,6 +73,7 @@ export class Bot extends CommandoClient {
                 ["voting", "Commands for voting"],
                 ["log", "Commands for server logging"],
                 ["profile", "Commands for your profile"],
+                ["queries", "Handles questions for special events"],
             ])
 
             .registerCommandsIn({
