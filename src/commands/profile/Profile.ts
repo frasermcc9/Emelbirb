@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Message, MessageAttachment, User } from "discord.js";
+import { Message, MessageAttachment, User, GuildMember } from "discord.js";
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import sharp from "sharp";
 import { ServerSettingsModel } from "../../database/models/Server/Server.model";
@@ -22,8 +22,8 @@ export default class ProfileCommand extends Command {
                 {
                     key: "user",
                     prompt: "Who's profile would you like to see?",
-                    type: "user",
-                    default: (m: Message) => m.author,
+                    type: "member",
+                    default: (m: Message) => m.member,
                 },
             ],
         });
@@ -71,11 +71,16 @@ export default class ProfileCommand extends Command {
             }
         }
 
-        const userAvatar = user.avatarURL() ?? user.defaultAvatarURL;
+        const userAvatar = user.user.avatarURL() ?? user.user.defaultAvatarURL;
         bufferArray.push(this.fetchImg(userAvatar, { xPos: 19, yPos: 117, xResize: 184, yResize: 184 }));
 
-        const username = user.username;
+        const username = user.displayName;
         bufferArray.push(this.fetchName(username));
+
+        const aboutMe = userSettings.badges.aboutMe;
+        if (aboutMe !== undefined) {
+            bufferArray.push(this.aboutMe(aboutMe));
+        }
 
         const resolvedBuffers = await Promise.all(bufferArray);
         const image = base.composite(resolvedBuffers);
@@ -153,10 +158,11 @@ export default class ProfileCommand extends Command {
                 margin: 0,
                 maxWidth: 100,
                 fontWeight: "800",
+                textAlign: "center",
             });
             const pngBuffer = Buffer.from(nameImg.split(",")[1], "base64");
             const buffer = await sharp(pngBuffer).toBuffer();
-            res({ input: buffer, left: 142, top: 675 });
+            res({ input: buffer, left: 130, top: 675 });
         });
     }
 
@@ -171,23 +177,40 @@ export default class ProfileCommand extends Command {
     private fetchName(username: string): Promise<CompositeImage> {
         return new Promise(async (res) => {
             const nameImg = await generate(username, {
-                fontSize: 48,
-                lineHeight: 56,
+                fontSize: 44,
+                lineHeight: 46,
                 textColor: "#ffffff",
                 bgColor: "rgba(255, 255, 255, 0)",
                 margin: 0,
-                maxWidth: 340,
+                maxWidth: 400,
                 fontWeight: "700",
             });
             const pngBuffer = Buffer.from(nameImg.split(",")[1], "base64");
             const buffer = await sharp(pngBuffer).toBuffer();
-            res({ input: buffer, left: 218, top: 244 });
+            res({ input: buffer, left: 216, top: 204 });
+        });
+    }
+
+    private aboutMe(details: string): Promise<CompositeImage> {
+        return new Promise(async (res, rej) => {
+            const nameImg = await generate(details, {
+                fontSize: 24,
+                lineHeight: 28,
+                textColor: "#2e2e2e",
+                bgColor: "rgba(255, 255, 255, 0)",
+                margin: 0,
+                maxWidth: 540,
+                fontWeight: "500",
+            });
+            const pngBuffer = Buffer.from(nameImg.split(",")[1], "base64");
+            const buffer = await sharp(pngBuffer).toBuffer();
+            res({ input: buffer, left: 120, top: 364 });
         });
     }
 }
 
 interface CommandArguments {
-    user: User;
+    user: GuildMember;
 }
 
 interface CompositeImage {

@@ -4,6 +4,7 @@ import { IActiveBadges } from "../../../structures/Badges";
 import { GlobalModel } from "../Global/Global.model";
 import { findBestMatch } from "string-similarity";
 import { ExpUtility } from "../../../structures/Exp";
+import { set } from "lodash";
 
 //Section: Instance Methods (for document)
 
@@ -148,6 +149,14 @@ export abstract class UserSettingsMethods {
             this.stats = { credits: 0, exp: 0 };
         }
         return { credits: this.stats.credits, exp: this.stats.exp };
+    }
+    static async setAboutMe(this: IUserSettingsDocument, details: string): Promise<void> {
+        if (details.length > 255) {
+            throw new RangeError("AboutMe text length too long! Max length: 255 characters.");
+        }
+        set(this, "badges.aboutMe", details);
+        this.markModified("badges");
+        return await this.setLastUpdated();
     }
 }
 

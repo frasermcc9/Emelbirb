@@ -18,6 +18,7 @@ export interface IUserSettings {
         };
         background?: string;
         backgrounds?: string[];
+        aboutMe?: string;
     };
     stats: {
         credits: number;
@@ -45,6 +46,8 @@ export interface IUserSettingsDocument extends IUserSettings, Document {
     incrementStats(this: IUserSettingsDocument, exp: number, cred: number, guildId?: string): Promise<void>;
     decrementCredits(this: IUserSettingsDocument, n: number): Promise<boolean>;
     getStats(this: IUserSettingsDocument): { credits: number; exp: number };
+
+    setAboutMe(this: IUserSettingsDocument, details: string): Promise<void>;
 }
 
 export interface IUserSettingsModel extends Model<IUserSettingsDocument> {

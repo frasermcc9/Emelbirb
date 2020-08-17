@@ -15,6 +15,7 @@ const UserSettingsSchema = new Schema({
         },
         background: { type: String, required: false },
         backgrounds: [String],
+        aboutMe: String,
     },
     stats: {
         credits: Number,
@@ -48,5 +49,7 @@ UserSettingsSchema.methods.buyBackground = UserSettingsMethods.buyBackground;
 UserSettingsSchema.methods.decrementCredits = UserSettingsMethods.decrementCredits;
 UserSettingsSchema.methods.getStats = UserSettingsMethods.getStats;
 UserSettingsSchema.methods.incrementStats = UserSettingsMethods.incrementStats;
+
+UserSettingsSchema.methods.setAboutMe = UserSettingsMethods.setAboutMe;
 
 export default UserSettingsSchema;
