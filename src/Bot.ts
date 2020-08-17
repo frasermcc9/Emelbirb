@@ -11,6 +11,7 @@ import { EventEmitter } from "events";
 dotenv.config();
 export class Bot extends CommandoClient {
     private static readonly bot: Bot = new Bot();
+    public static debug = false;
 
     static get Get(): Bot {
         return this.bot;
@@ -36,7 +37,8 @@ export class Bot extends CommandoClient {
         this.usedEmails = new Set();
     }
 
-    async start(): Promise<void> {
+    async start(debug = false): Promise<void> {
+        Bot.debug = debug;
         return new Promise(async (resolve, reject) => {
             if (process.env.TOKEN === undefined) {
                 Log.error("Bot", "No token was provided.");

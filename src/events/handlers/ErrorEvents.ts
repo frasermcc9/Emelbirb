@@ -8,7 +8,9 @@ export default class DebugOutput implements BotEvent {
     private client: Bot = Bot.Get;
 
     start(): void {
-        this.client.on("debug", (info: string) => Log.debug("Bot", info));
+        if (Bot.debug) {
+            this.client.on("debug", (info: string) => Log.debug("Bot", info));
+        }
         this.client.on("warn", (info: string) => Log.warn("Bot", info));
         this.client.on("error", (info: Error) => Log.error("Bot", "Error occurred", info));
 
