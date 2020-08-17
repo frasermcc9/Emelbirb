@@ -1,4 +1,5 @@
 import { IGlobalDocument, IGlobalModel } from "./Global.model";
+import { set } from "lodash";
 
 export abstract class GlobalDocumentMethods {
     static async setLastUpdated(this: IGlobalDocument): Promise<void> {
@@ -10,11 +11,7 @@ export abstract class GlobalDocumentMethods {
     }
 
     static async addBackground(this: IGlobalDocument, ...[name, uri, cost]: [string, string, number]): Promise<void> {
-        this.backgrounds.list[name] = {
-            name: name,
-            uri: uri,
-            cost: cost,
-        };
+        set(this, `backgrounds.list.${name}`, { name: name, uri: uri, cost: cost });
         this.markModified("backgrounds");
         await this.setLastUpdated();
     }
