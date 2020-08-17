@@ -35,7 +35,7 @@ export default class LevelCommand extends Command {
         const output = new MessageEmbed()
             .setTitle("Your Level")
             .setColor("#4293f5")
-            .setThumbnail(message.author.displayAvatarURL())
+            .setThumbnail(user.displayAvatarURL())
             .setDescription(`You are level **${level}**!`)
             .addField(
                 "Experience till next level",
