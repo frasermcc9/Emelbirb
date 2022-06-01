@@ -27,7 +27,7 @@
     "lodash": "^4.17.20",
     "mongoose": "^5.9.26",
     "require-all": "^3.0.0",
-    "sharp": "^0.25.4",
+    "sharp": "^0.30.5",
     "string-similarity": "^4.0.1",
     "text-to-image": "git+https://github.com/bostrom/text-to-image.git",
     "ts-node": "^8.10.2"
